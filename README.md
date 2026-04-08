@@ -1,36 +1,178 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Lions Fitness
 
-## Getting Started
+Lions Fitness is a complete role-based gym management app built with Next.js and Firebase.
 
-First, run the development server:
+## Included Modules
 
+1. Authentication
+- Email/password signup/login
+- Google login
+- Forgot password reset flow
+- Admin-controlled role routing (`admin`, `trainer`, `member`)
+
+2. Member App
+- Dashboard
+- Attendance check-in/history
+- Progress tracker + log entries
+- Payment history + online payment checkout (UPI/card/net-banking/wallet)
+- Notifications
+- Profile settings
+
+3. Trainer App
+- Dashboard
+- Assigned members view
+- Workout builder/assignment
+- Attendance reporting
+- Progress reporting
+- Notifications sender
+
+4. Admin App
+- Dashboard
+- Manage members
+- Manage trainers
+- Manage membership plans
+- Manage payments
+- Reports
+- Announcements
+
+## Tech Stack
+
+- Next.js (App Router)
+- React
+- Firebase Auth
+- Cloud Firestore
+- Tailwind CSS
+
+## Quick Start
+
+1. Install dependencies
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2. Configure environment (optional for demo mode)
+```bash
+cp .env.example .env.local
+```
+If you keep placeholder values, the app runs in **Demo Mode** (local auth + local data in browser storage).
+If you add real Firebase values, it runs with Firebase Auth + Firestore.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+3. Run locally
+```bash
+npm run dev
+```
+Open [http://localhost:3000](http://localhost:3000).
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Demo Mode (No Firebase Required)
 
-## Learn More
+- Works out of the box with no keys
+- Sign up/login is fully functional
+- Role-based dashboards (Admin/Trainer/Member) work
+- Data persists in browser `localStorage`
 
-To learn more about Next.js, take a look at the following resources:
+## Role Control (Important)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- Roles are assigned from `users/{uid}.role` (admin panel updates this).
+- You can force bootstrap roles by email via environment:
+  - `NEXT_PUBLIC_ADMIN_EMAILS`
+  - `NEXT_PUBLIC_TRAINER_EMAILS`
+- In demo mode, a single admin account is auto-seeded from:
+  - `NEXT_PUBLIC_ADMIN_EMAILS` (first email)
+  - `NEXT_PUBLIC_DEMO_ADMIN_PASSWORD`
+- Trainer test account is auto-seeded from:
+  - `NEXT_PUBLIC_TRAINER_EMAILS` (first email)
+  - `NEXT_PUBLIC_DEMO_TRAINER_PASSWORD`
+- Keep `NEXT_PUBLIC_ALLOW_ROLE_SIGNUP=false` for strict admin-only control.
+- For strict single-user access, set:
+  - `NEXT_PUBLIC_OWNER_ONLY_MODE=true`
+  - `NEXT_PUBLIC_OWNER_EMAIL=<your-email>`
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Online Payments (Razorpay)
 
-## Deploy on Vercel
+- Member due payments support UPI, card, net-banking, and wallet checkout.
+- Required environment variables:
+  - `NEXT_PUBLIC_PAYMENT_API_BASE_URL` (required for APK/Capacitor builds, set deployed backend URL)
+  - `NEXT_PUBLIC_RAZORPAY_KEY_ID`
+  - `RAZORPAY_KEY_SECRET`
+  - `RAZORPAY_WEBHOOK_SECRET`
+- Payment verification is server-side through:
+  - `POST /api/payments/create-order`
+  - `POST /api/payments/verify`
+  - `POST /api/payments/webhook`
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Production Deploy
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Use the full guide in [`DEPLOYMENT.md`](./DEPLOYMENT.md).
+
+Common commands:
+
+```bash
+npm run check:env
+npm run build:strict
+npm run firebase:login
+npm run deploy:firebase:rules
+npm run vercel:login
+npm run deploy:vercel:prod
+```
+
+## Firebase Setup (Rules + Indexes)
+
+This repo now includes:
+- `firestore.rules`
+- `firestore.indexes.json`
+- `firebase.json`
+
+Deploy them with Firebase CLI:
+```bash
+firebase login
+firebase use <your-project-id>
+firebase deploy --only firestore:rules,firestore:indexes
+```
+
+## Routes
+
+- `/` Landing page
+- `/login` Login / Signup / Google / Forgot password
+- `/dashboard` Auto-route by role
+
+- `/member/dashboard`
+- `/member/attendance`
+- `/member/progress`
+- `/member/payments`
+- `/member/notifications`
+- `/member/profile`
+
+- `/trainer/dashboard`
+- `/trainer/members`
+- `/trainer/workouts`
+- `/trainer/attendance`
+- `/trainer/progress`
+- `/trainer/notifications`
+
+- `/admin/dashboard`
+- `/admin/members`
+- `/admin/trainers`
+- `/admin/plans`
+- `/admin/payments`
+- `/admin/reports`
+- `/admin/announcements`
+
+## Firestore Data Shape (Used By App)
+
+- `users/{uid}`
+  - role, displayName, email, trainerId, membershipStatus, membershipPlanName, fitnessGoal
+- `users/{uid}/attendance/{dateId}`
+- `users/{uid}/progress/{entryId}`
+- `users/{uid}/workouts/{entryId}`
+- `users/{uid}/payments/{paymentId}`
+- `membershipPlans/{planId}`
+- `payments/{paymentId}`
+- `workoutPlans/{planId}`
+- `notifications/{notificationId}`
+- `announcements/{announcementId}`
+
+## Validation
+
+Current codebase validation:
+- `npm run lint` passes
+- `npm run build` passes

@@ -1,0 +1,104 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function signedIn() {
+      return request.auth != null;
+    }
+
+    function currentUid() {
+      return request.auth.uid;
+    }
+
+    function userPath(uid) {
+      return /databases/$(database)/documents/users/$(uid);
+    }
+
+    function userDoc(uid) {
+      return get(userPath(uid));
+    }
+
+    function requesterRole() {
+      return signedIn() && exists(userPath(currentUid()))
+        ? userDoc(currentUid()).data.role
+        : null;
+    }
+
+    function isAdmin() {
+      return requesterRole() == 'admin';
+    }
+
+    function isTrainer() {
+      return requesterRole() == 'trainer';
+    }
+
+    function isOwner(uid) {
+      return signedIn() && currentUid() == uid;
+    }
+
+    function trainerOwnsMember(uid) {
+      return isTrainer()
+        && exists(userPath(uid))
+        && userDoc(uid).data.role == 'member'
+        && userDoc(uid).data.trainerId == currentUid();
+    }
+
+    match /users/{userId} {
+      allow create: if isOwner(userId);
+      allow read: if isOwner(userId) || isAdmin() || trainerOwnsMember(userId);
+      allow update: if isOwner(userId) || isAdmin();
+      allow delete: if isAdmin();
+    }
+
+    match /users/{userId}/attendance/{attendanceId} {
+      allow read: if isOwner(userId) || isAdmin() || trainerOwnsMember(userId);
+      allow create, update, delete: if isOwner(userId) || isAdmin();
+    }
+
+    match /users/{userId}/progress/{progressId} {
+      allow read: if isOwner(userId) || isAdmin() || trainerOwnsMember(userId);
+      allow create, update, delete: if isOwner(userId) || isAdmin();
+    }
+
+    match /users/{userId}/workouts/{workoutId} {
+      allow read: if isOwner(userId) || isAdmin() || trainerOwnsMember(userId);
+      allow create, update, delete: if isOwner(userId) || isAdmin();
+    }
+
+    match /users/{userId}/payments/{paymentId} {
+      allow read: if isOwner(userId) || isAdmin();
+      allow create, update, delete: if isAdmin();
+    }
+
+    match /membershipPlans/{planId} {
+      allow read: if signedIn();
+      allow create, update, delete: if isAdmin();
+    }
+
+    match /announcements/{announcementId} {
+      allow read: if signedIn();
+      allow create, update, delete: if isAdmin();
+    }
+
+    match /notifications/{notificationId} {
+      allow read: if signedIn();
+      allow create: if isAdmin() || isTrainer();
+      allow update, delete: if isAdmin() || (signedIn() && resource.data.createdBy == currentUid());
+    }
+
+    match /payments/{paymentId} {
+      allow read: if isAdmin() || (signedIn() && resource.data.memberId == currentUid());
+      allow create, update, delete: if isAdmin();
+    }
+
+    match /workoutPlans/{planId} {
+      allow read: if isAdmin()
+        || (signedIn() && resource.data.assignedTo == currentUid())
+        || (signedIn() && resource.data.createdBy == currentUid())
+        || (signedIn() && resource.data.trainerId == currentUid())
+        || trainerOwnsMember(resource.data.assignedTo);
+
+      allow create: if isAdmin() || isTrainer();
+      allow update, delete: if isAdmin() || (signedIn() && resource.data.createdBy == currentUid());
+    }
+  }
+}

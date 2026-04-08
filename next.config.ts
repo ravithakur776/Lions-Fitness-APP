@@ -1,7 +1,18 @@
-import type { NextConfig } from "next";
+import type { NextConfig } from 'next'
+
+const isCapacitorBuild = process.env.BUILD_TARGET === 'capacitor'
 
 const nextConfig: NextConfig = {
-  /* config options here */
-};
+  reactStrictMode: true,
+  poweredByHeader: false,
+  ...(isCapacitorBuild
+    ? {
+        output: 'export',
+        images: {
+          unoptimized: true,
+        },
+      }
+    : {}),
+}
 
-export default nextConfig;
+export default nextConfig
