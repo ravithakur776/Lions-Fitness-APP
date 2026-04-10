@@ -217,17 +217,21 @@ export default function LoginPage() {
 
   return (
     <main className="lf-app-bg min-h-screen text-[var(--lf-text)]">
-      <div className="mx-auto grid min-h-screen w-full max-w-6xl items-center gap-6 px-4 py-8 md:grid-cols-[1fr_420px]">
-        <section className="lf-card hidden p-8 md:block">
-          <p className="mb-2 text-xs uppercase tracking-[0.14em] text-[var(--lf-text-soft)]">Welcome to</p>
+      <div className="mx-auto grid min-h-screen w-full max-w-7xl items-center gap-6 px-4 py-8 md:grid-cols-[1.12fr_420px]">
+        <section className="lf-card lf-soft-glow hidden p-8 md:block">
+          <div className="lf-chip mb-4 w-fit">
+            <span className="lf-dot" />
+            Welcome to
+          </div>
           <h1 className="text-5xl font-semibold leading-none" style={{ fontFamily: 'var(--font-space-grotesk)' }}>
-            Lions Fitness
+            <span className="lf-gradient-title">Lions Fitness</span>
           </h1>
           <p className="mt-4 max-w-md text-sm leading-6 text-[var(--lf-text-soft)]">
             Powerful role-based gym management for members, trainers, and admins. Built for clean workflows and
             daily consistency.
           </p>
-          <div className="mt-6 grid gap-2">
+          <div className="lf-divider my-5" />
+          <div className="lf-stagger mt-3 grid gap-2">
             <div className="lf-item">
               <p className="text-xs font-semibold uppercase tracking-[0.12em] text-[var(--lf-accent-soft)]">Member</p>
               <p className="mt-1 text-sm text-[var(--lf-text-soft)]">Attendance, workouts, progress, payments.</p>
@@ -241,29 +245,43 @@ export default function LoginPage() {
               <p className="mt-1 text-sm text-[var(--lf-text-soft)]">Plans, payments, reports and announcements.</p>
             </div>
           </div>
+          <div className="mt-5 grid grid-cols-3 gap-2">
+            <div className="lf-card-soft p-2.5">
+              <p className="text-[10px] uppercase tracking-[0.12em] text-[var(--lf-text-soft)]">Users</p>
+              <p className="mt-1 text-lg font-semibold">3 Roles</p>
+            </div>
+            <div className="lf-card-soft p-2.5">
+              <p className="text-[10px] uppercase tracking-[0.12em] text-[var(--lf-text-soft)]">Tracking</p>
+              <p className="mt-1 text-lg font-semibold">Realtime</p>
+            </div>
+            <div className="lf-card-soft p-2.5">
+              <p className="text-[10px] uppercase tracking-[0.12em] text-[var(--lf-text-soft)]">Payments</p>
+              <p className="mt-1 text-lg font-semibold">UPI Ready</p>
+            </div>
+          </div>
         </section>
 
         <div className="w-full">
           <Link href="/" className="mb-3 inline-block text-xs text-[var(--lf-accent-soft)] hover:underline">
             ← Back to Home
           </Link>
-          <div className="lf-card p-5 md:p-6">
+          <div className="lf-card lf-soft-glow p-5 md:p-6">
             <div className="mb-5 text-center">
-              <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-2xl bg-[var(--lf-accent)]">
+              <div className="lf-float mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-2xl bg-[var(--lf-accent)]">
                 <svg width="22" height="22" viewBox="0 0 28 28" fill="none" aria-hidden="true">
                   <path d="M14 4C10 4 7 7 7 11c0 5 7 13 7 13s7-8 7-13c0-4-3-7-7-7z" fill="#fff" />
                   <circle cx="14" cy="11" r="3" fill="#c04828" />
                 </svg>
               </div>
               <h2 className="text-3xl font-semibold leading-none" style={{ fontFamily: 'var(--font-space-grotesk)' }}>
-                {isSignup ? 'Create Account' : 'Welcome Back'}
+                <span className="lf-gradient-title">{isSignup ? 'Create Account' : 'Welcome Back'}</span>
               </h2>
               <p className="mt-1 text-xs text-[var(--lf-text-soft)]">
                 {isSignup ? 'Join Lions Fitness in under a minute' : 'Log in to continue your fitness journey'}
               </p>
             </div>
 
-            <div className="mb-4 flex rounded-xl border border-[var(--lf-border)] bg-[color-mix(in_srgb,var(--lf-surface-soft)_70%,transparent)] p-1">
+            <div className="mb-4 flex rounded-xl border border-[var(--lf-border)] bg-[color-mix(in_srgb,var(--lf-surface-soft)_65%,transparent)] p-1">
               <button
                 type="button"
                 onClick={() => handleRoleToggle('login')}

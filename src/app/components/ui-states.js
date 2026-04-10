@@ -3,7 +3,11 @@
 export function PageLoader({ label = 'Loading...' }) {
   return (
     <main className="lf-app-bg flex min-h-screen items-center justify-center p-4 text-[var(--lf-text)]">
-      <div className="lf-card w-full max-w-md p-5">
+      <div className="lf-card lf-soft-glow w-full max-w-md p-5">
+        <div className="lf-chip mb-3 w-fit">
+          <span className="lf-dot" />
+          Lions Fitness
+        </div>
         <div className="lf-skeleton mb-3 h-4 w-32 rounded-md" />
         <div className="lf-skeleton mb-2 h-3 w-full rounded-md" />
         <div className="lf-skeleton mb-2 h-3 w-10/12 rounded-md" />

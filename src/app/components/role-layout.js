@@ -19,18 +19,23 @@ export function RoleLayout({
     <main className="lf-app-bg min-h-screen text-[var(--lf-text)]">
       <div className={`mx-auto w-full px-4 py-5 md:px-6 md:py-7 ${maxWidth}`}>
         <header className="lf-card lf-rise-in mb-4 p-4 md:p-5">
+          <div className="pointer-events-none absolute -right-8 -top-12 h-28 w-28 rounded-full bg-[color-mix(in_srgb,var(--lf-accent)_30%,transparent)] blur-3xl" />
+          <div className="pointer-events-none absolute -left-8 bottom-0 h-20 w-20 rounded-full bg-[color-mix(in_srgb,#3b82f6_25%,transparent)] blur-2xl" />
           <div className="flex flex-wrap items-start justify-between gap-4">
             <div className="flex items-center gap-3">
-              <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-[var(--lf-accent)] text-sm font-bold text-white shadow-lg shadow-black/30">
+              <div className="lf-float flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-[var(--lf-accent)] text-sm font-bold text-white shadow-lg shadow-black/30">
                 {initials}
               </div>
               <div>
-                <p className="text-[11px] uppercase tracking-[0.14em] text-[var(--lf-text-soft)]">Lions Fitness</p>
+                <div className="lf-chip mb-1.5">
+                  <span className="lf-dot" />
+                  Lions Fitness Console
+                </div>
                 <h1
                   className="text-xl font-semibold leading-tight md:text-2xl"
                   style={{ fontFamily: 'var(--font-space-grotesk)' }}
                 >
-                  {title}
+                  <span className="lf-gradient-title">{title}</span>
                 </h1>
                 <p className="mt-0.5 text-sm text-[var(--lf-text-soft)]">{subtitle}</p>
                 {userName && <p className="mt-1 text-xs text-[var(--lf-accent-soft)]">{userName}</p>}
@@ -60,71 +65,26 @@ export function RoleLayout({
                 Navigation
               </p>
               <nav className="space-y-1.5">
-                {navItems.map((item) => {
-                  const active = currentPath === item.href
-                  return (
-                    <Link
-                      key={item.href}
-                      href={item.href}
-                      className={`group flex items-center gap-2 rounded-xl px-3 py-2 transition ${
-                        active
-                          ? 'bg-[color-mix(in_srgb,var(--lf-accent)_22%,transparent)]'
-                          : 'hover:bg-[color-mix(in_srgb,var(--lf-surface-soft)_65%,transparent)]'
-                      }`}
-                    >
-                      <span className="inline-flex h-5 w-5 items-center justify-center">
-                        <NavIcon label={item.label} active={active} />
-                      </span>
-                      <span
-                        className={`text-xs font-medium ${
-                          active
-                            ? 'text-[var(--lf-accent-soft)]'
-                            : 'text-[var(--lf-text-soft)] group-hover:text-[var(--lf-text)]'
-                        }`}
-                      >
-                        {item.label}
-                      </span>
-                    </Link>
-                  )
-                })}
+                {navItems.map((item) => (
+                  <NavLink key={item.href} item={item} active={currentPath === item.href} mobile={false} />
+                ))}
               </nav>
             </aside>
           )}
 
-          <section className="lf-fade-in pb-[96px] md:pb-0">{children}</section>
+          <section className="lf-fade-in pb-[112px] md:pb-0">{children}</section>
         </div>
       </div>
 
       {navItems.length > 0 && (
         <div className="pointer-events-none fixed inset-x-0 bottom-0 z-40 px-2 pb-[calc(env(safe-area-inset-bottom)+8px)] md:hidden">
+          <div className="pointer-events-none absolute inset-x-0 -top-10 h-10 bg-gradient-to-t from-black/45 to-transparent" />
           <div className={`mx-auto w-full ${maxWidth} pointer-events-auto`}>
             <nav className="lf-card lf-mobile-nav p-2">
               <div className="lf-scroll-x flex items-center gap-1.5 overflow-x-auto pb-1">
-                {navItems.map((item) => {
-                  const active = currentPath === item.href
-                  return (
-                    <Link
-                      key={item.href}
-                      href={item.href}
-                      className={`group flex min-w-[68px] flex-1 flex-col items-center justify-center rounded-xl px-2 py-2 text-center transition ${
-                        active
-                          ? 'bg-[color-mix(in_srgb,var(--lf-accent)_22%,transparent)]'
-                          : 'hover:bg-[color-mix(in_srgb,var(--lf-surface-soft)_60%,transparent)]'
-                      }`}
-                    >
-                      <span className="mb-1 inline-flex h-5 w-5 items-center justify-center">
-                        <NavIcon label={item.label} active={active} />
-                      </span>
-                      <span
-                        className={`text-[10px] font-medium ${
-                          active ? 'text-[var(--lf-accent-soft)]' : 'text-[var(--lf-text-soft)]'
-                        }`}
-                      >
-                        {item.label}
-                      </span>
-                    </Link>
-                  )
-                })}
+                {navItems.map((item) => (
+                  <NavLink key={item.href} item={item} active={currentPath === item.href} mobile />
+                ))}
               </div>
             </nav>
           </div>
@@ -136,11 +96,12 @@ export function RoleLayout({
 
 export function Card({ title, children, className = '' }) {
   return (
-    <section className={`lf-card lf-card-interactive lf-rise-in p-4 ${className}`}>
+    <section className={`lf-card lf-card-interactive lf-rise-in p-4 md:p-5 ${className}`}>
       {title && (
-        <h2 className="mb-3 text-[11px] font-semibold uppercase tracking-[0.12em] text-[var(--lf-text-soft)]">
-          {title}
-        </h2>
+        <div className="mb-3 px-1.5 text-center">
+          <h2 className="text-[11px] font-semibold uppercase tracking-[0.12em] text-[var(--lf-text-soft)]">{title}</h2>
+          <div className="lf-divider mt-2" />
+        </div>
       )}
       {children}
     </section>
@@ -151,8 +112,58 @@ export function StatCard({ label, value, accent = 'text-orange-300' }) {
   return (
     <article className="lf-card-soft lf-rise-in p-3">
       <p className="text-[10px] uppercase tracking-[0.12em] text-[var(--lf-text-soft)]">{label}</p>
-      <p className={`mt-1 text-xl font-semibold ${accent}`}>{value}</p>
+      <p className={`mt-1 text-[1.35rem] font-semibold tracking-tight ${accent}`}>{value}</p>
     </article>
+  )
+}
+
+function NavLink({ item, active, mobile = false }) {
+  if (mobile) {
+    return (
+      <Link
+        href={item.href}
+        className={`group flex min-w-[68px] flex-1 flex-col items-center justify-center rounded-xl px-2 py-2 text-center transition ${
+          active
+            ? 'bg-[color-mix(in_srgb,var(--lf-accent)_22%,transparent)]'
+            : 'hover:bg-[color-mix(in_srgb,var(--lf-surface-soft)_60%,transparent)]'
+        }`}
+      >
+        <span className="mb-1 inline-flex h-5 w-5 items-center justify-center">
+          <NavIcon label={item.label} active={active} />
+        </span>
+        <span
+          className={`text-[10px] font-medium ${
+            active ? 'text-[var(--lf-accent-soft)]' : 'text-[var(--lf-text-soft)]'
+          }`}
+        >
+          {item.label}
+        </span>
+      </Link>
+    )
+  }
+
+  return (
+    <Link
+      href={item.href}
+      className={`group flex items-center gap-2 rounded-xl px-3 py-2 transition ${
+        active
+          ? 'bg-[color-mix(in_srgb,var(--lf-accent)_22%,transparent)]'
+          : 'hover:bg-[color-mix(in_srgb,var(--lf-surface-soft)_65%,transparent)]'
+      }`}
+    >
+      <span className="inline-flex h-5 w-5 items-center justify-center">
+        <NavIcon label={item.label} active={active} />
+      </span>
+      <span
+        className={`text-xs font-medium ${
+          active
+            ? 'text-[var(--lf-accent-soft)]'
+            : 'text-[var(--lf-text-soft)] group-hover:text-[var(--lf-text)]'
+        }`}
+      >
+        {item.label}
+      </span>
+    </Link>
   )
 }
 

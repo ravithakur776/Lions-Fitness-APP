@@ -72,12 +72,29 @@ export default function TrainerDashboardPage() {
       maxWidth="max-w-6xl"
     >
       {(error || status.message) && (
-        <div className="mb-4 rounded-xl border border-red-500/30 bg-red-500/10 p-3 text-sm text-red-200">
+        <div className={`lf-alert ${(error || status.type === 'error') ? 'is-error' : 'is-success'}`}>
           {error || status.message}
         </div>
       )}
 
-      <section className="mb-4 grid gap-3 md:grid-cols-4">
+      <section className="lf-card lf-hero-panel mb-4 p-4">
+        <div className="flex flex-wrap items-start justify-between gap-4">
+          <div>
+            <p className="text-xs uppercase tracking-[0.12em] text-[var(--lf-accent-soft)]">Daily Coaching Focus</p>
+            <h2 className="mt-1 text-xl font-semibold" style={{ fontFamily: 'var(--font-space-grotesk)' }}>
+              {metrics.checkedInToday}/{metrics.totalMembers} members checked in today
+            </h2>
+            <p className="mt-1 text-sm text-[var(--lf-text-soft)]">
+              Keep engagement high with plan updates and reminders.
+            </p>
+          </div>
+          <div className={`lf-status-pill ${metrics.pendingReviews > 0 ? 'is-warn' : 'is-good'}`}>
+            {metrics.pendingReviews > 0 ? `${metrics.pendingReviews} pending` : 'all reviewed'}
+          </div>
+        </div>
+      </section>
+
+      <section className="lf-kpi-grid mb-4 md:grid-cols-4">
         <StatCard label="My Members" value={`${metrics.totalMembers}`} />
         <StatCard label="Checked-in Today" value={`${metrics.checkedInToday}`} accent="text-green-300" />
         <StatCard label="Workout Plans" value={`${metrics.workoutPlans}`} />
@@ -108,7 +125,7 @@ export default function TrainerDashboardPage() {
         {members.length === 0 ? (
           <EmptyState title="No members assigned yet" message="Ask admin to assign members to your profile." />
         ) : (
-          <div className="space-y-2">
+          <div className="lf-stagger space-y-2">
             {members.slice(0, 8).map((member) => (
               <article key={member.id} className="lf-item">
                 <div className="flex items-center justify-between gap-2">

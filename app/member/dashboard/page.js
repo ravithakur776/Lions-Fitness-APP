@@ -115,6 +115,13 @@ export default function MemberDashboardPage() {
   const membershipStatus = getDerivedMembershipStatus(profile?.membershipStatus, profile?.membershipExpiresAt)
   const daysLeft = getDaysUntil(profile?.membershipExpiresAt)
 
+  const statusTone =
+    membershipStatus === 'expired'
+      ? 'is-bad'
+      : typeof daysLeft === 'number' && daysLeft <= 7
+        ? 'is-warn'
+        : 'is-good'
+
   const handleWorkoutChange = (event) => {
     const { name, value } = event.target
     setWorkout((prev) => ({ ...prev, [name]: value }))
@@ -198,19 +205,42 @@ export default function MemberDashboardPage() {
       maxWidth="max-w-5xl"
     >
       {(error || status.message) && (
-        <div
-          className={`mb-4 rounded-xl border p-3 text-sm ${
-            (error || status.type === 'error')
-              ? 'border-red-500/30 bg-red-500/10 text-red-200'
-              : 'border-green-500/30 bg-green-500/10 text-green-200'
-          }`}
-        >
+        <div className={`lf-alert ${(error || status.type === 'error') ? 'is-error' : 'is-success'}`}>
           {error || status.message}
         </div>
       )}
 
-      <section className="lf-card-soft mb-4 p-4">
-        <div className="flex items-center justify-between gap-3">
+      <section className="lf-card lf-hero-panel mb-4 p-4 md:p-5">
+        <div className="flex flex-wrap items-start justify-between gap-4">
+          <div className="w-full text-center">
+            <p className="text-xs uppercase tracking-[0.12em] text-[var(--lf-accent-soft)]">Today Focus</p>
+            <h2 className="mt-1 text-xl font-semibold" style={{ fontFamily: 'var(--font-space-grotesk)' }}>
+              {todayPlan?.title || 'No plan assigned yet'}
+            </h2>
+            <p className="mt-1 text-sm text-[var(--lf-text-soft)]">
+              {todayPlan
+                ? `${todayWorkoutProgress.done}/${todayWorkoutProgress.total} exercises done`
+                : 'Ask your trainer to assign today\'s workout plan.'}
+            </p>
+          </div>
+          <div className={`lf-status-pill mx-auto ${statusTone}`}>
+            {membershipStatus}
+          </div>
+        </div>
+
+        <div className="mt-4 px-1 md:px-2">
+          <div className="mb-1 flex items-center justify-between text-xs text-[var(--lf-text-soft)]">
+            <span>Workout completion</span>
+            <span>{todayWorkoutProgress.percent}%</span>
+          </div>
+          <div className="lf-progress-track">
+            <div className="lf-progress-fill" style={{ width: `${todayWorkoutProgress.percent}%` }} />
+          </div>
+        </div>
+      </section>
+
+      <section className="lf-card-soft mb-4 p-4 md:p-5">
+        <div className="flex flex-col items-center justify-center gap-2 text-center">
           <div>
             <p className="text-[10px] font-medium tracking-[0.12em] text-[var(--lf-accent-soft)]">MEMBERSHIP STATUS</p>
             <p className="text-lg font-medium text-[var(--lf-text)]">{profile?.membershipPlanName || 'Premium Plan'}</p>
@@ -225,14 +255,14 @@ export default function MemberDashboardPage() {
         </div>
       </section>
 
-      <section className="mb-4 grid gap-3 md:grid-cols-4">
+      <section className="lf-kpi-grid lf-stagger mb-4 md:grid-cols-4">
         <StatCard label="Attendance" value={`${monthAttendance} days`} />
         <StatCard label="Weight" value={latestWeight} />
         <StatCard label="Next Payment" value={nextPaymentDate} accent="text-yellow-300" />
         <StatCard label="Streak" value={`${streak} days`} />
       </section>
 
-      <section className="mb-6 grid gap-3 md:grid-cols-3">
+      <section className="lf-kpi-grid lf-stagger mb-6 md:grid-cols-3">
         <StatCard label="Total Workouts" value={summary.totalWorkouts} />
         <StatCard label="Total Minutes" value={summary.totalMinutes} />
         <StatCard label="Total Calories" value={summary.totalCalories} />
@@ -249,7 +279,7 @@ export default function MemberDashboardPage() {
             <>
               <p className="mb-2 text-sm font-semibold text-[var(--lf-text)]">{todayPlan.title || 'Assigned Plan'}</p>
               <p className="mb-2 text-xs text-[var(--lf-text-soft)]">Tap any exercise to mark it complete.</p>
-              <div className="space-y-2">
+              <div className="lf-stagger space-y-2">
                 {(todayPlan.exercises || []).map((exercise, index) => (
                   <button
                     key={`${exercise.name}-${index}`}
@@ -296,8 +326,8 @@ export default function MemberDashboardPage() {
                     {todayWorkoutProgress.done}/{todayWorkoutProgress.total}
                   </span>
                 </div>
-                <div className="h-1.5 rounded-full bg-[var(--lf-border)]">
-                  <div className="h-1.5 rounded-full bg-[var(--lf-accent)]" style={{ width: `${todayWorkoutProgress.percent}%` }} />
+                <div className="lf-progress-track">
+                  <div className="lf-progress-fill" style={{ width: `${todayWorkoutProgress.percent}%` }} />
                 </div>
               </div>
             </>
@@ -364,7 +394,7 @@ export default function MemberDashboardPage() {
         {workouts.length === 0 ? (
           <EmptyState title="No workout logs yet" message="Start logging workouts to build your activity history." />
         ) : (
-          <div className="space-y-2">
+          <div className="lf-stagger space-y-2">
             {workouts.slice(0, 8).map((item) => (
               <article key={item.id} className="lf-item">
                 <p className="font-semibold text-[var(--lf-text)]">{item.type || 'Workout'}</p>

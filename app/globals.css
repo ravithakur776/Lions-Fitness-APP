@@ -46,6 +46,7 @@ body {
   font-family: var(--font-outfit), ui-sans-serif, system-ui, -apple-system, sans-serif;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
+  line-height: 1.45;
 }
 
 ::selection {
@@ -60,41 +61,77 @@ body {
 
 .lf-app-bg {
   background:
-    radial-gradient(1200px 600px at 100% -10%, color-mix(in srgb, var(--lf-accent) 18%, transparent), transparent 60%),
-    radial-gradient(900px 500px at -5% -5%, color-mix(in srgb, #3b82f6 18%, transparent), transparent 52%),
+    radial-gradient(1200px 620px at 100% -10%, color-mix(in srgb, var(--lf-accent) 20%, transparent), transparent 60%),
+    radial-gradient(980px 560px at -5% -5%, color-mix(in srgb, #3b82f6 19%, transparent), transparent 52%),
+    radial-gradient(700px 440px at 50% 115%, color-mix(in srgb, #22c55e 8%, transparent), transparent 60%),
     linear-gradient(180deg, var(--lf-bg) 0%, var(--lf-bg-soft) 100%);
+  background-attachment: fixed;
 }
 
 .lf-card {
   background: color-mix(in srgb, var(--lf-surface) 92%, transparent);
-  border: 1px solid var(--lf-border);
+  border: 1px solid color-mix(in srgb, var(--lf-border) 86%, transparent);
   border-radius: 18px;
-  box-shadow: var(--lf-shadow);
-  transition: transform 180ms ease, border-color 180ms ease, background 180ms ease;
+  box-shadow: var(--lf-shadow), inset 0 1px 0 color-mix(in srgb, white 7%, transparent);
+  transition: transform 180ms ease, border-color 180ms ease, background 180ms ease, box-shadow 180ms ease;
+  position: relative;
+  overflow: hidden;
 }
 
 .lf-card-soft {
   background: color-mix(in srgb, var(--lf-surface-soft) 94%, transparent);
-  border: 1px solid color-mix(in srgb, var(--lf-border) 72%, transparent);
+  border: 1px solid color-mix(in srgb, var(--lf-border) 78%, transparent);
   border-radius: 16px;
-  transition: transform 150ms ease, border-color 150ms ease;
+  transition: transform 150ms ease, border-color 150ms ease, background 150ms ease;
 }
 
 .lf-field {
   width: 100%;
+  max-width: 100%;
   border-radius: 12px;
   border: 1px solid color-mix(in srgb, var(--lf-border) 85%, transparent);
   background: color-mix(in srgb, var(--lf-bg) 40%, var(--lf-surface) 60%);
-  padding: 0.64rem 0.82rem;
+  padding: 0.64rem 1rem;
+  text-indent: 0.08rem;
   font-size: 0.92rem;
   line-height: 1.35;
   color: var(--lf-text);
+  text-align: left;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
   outline: none;
+  appearance: none;
+  -webkit-appearance: none;
   transition: border-color 150ms ease, box-shadow 150ms ease, transform 120ms ease;
+}
+
+textarea.lf-field {
+  text-indent: 0;
+  white-space: normal;
+  overflow: auto;
+  text-overflow: clip;
+  resize: vertical;
+}
+
+select.lf-field {
+  background-image:
+    linear-gradient(45deg, transparent 50%, color-mix(in srgb, var(--lf-text-soft) 80%, transparent) 50%),
+    linear-gradient(135deg, color-mix(in srgb, var(--lf-text-soft) 80%, transparent) 50%, transparent 50%);
+  background-position:
+    calc(100% - 16px) calc(50% - 1px),
+    calc(100% - 11px) calc(50% - 1px);
+  background-size: 5px 5px, 5px 5px;
+  background-repeat: no-repeat;
+  padding-right: 2rem;
 }
 
 .lf-field::placeholder {
   color: color-mix(in srgb, var(--lf-text-soft) 85%, transparent);
+  text-indent: 0.08rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .lf-field:focus {
@@ -106,16 +143,39 @@ body {
   width: 100%;
   border-radius: 12px;
   border: 1px solid color-mix(in srgb, var(--lf-accent) 82%, black 18%);
-  background: linear-gradient(135deg, var(--lf-accent-soft) 0%, var(--lf-accent) 95%);
+  background:
+    linear-gradient(165deg, color-mix(in srgb, white 15%, transparent) 0%, transparent 40%),
+    linear-gradient(135deg, var(--lf-accent-soft) 0%, var(--lf-accent) 95%);
   color: #fff;
   font-weight: 600;
   padding: 0.66rem 0.95rem;
   font-size: 0.92rem;
-  transition: transform 120ms ease, filter 140ms ease;
+  position: relative;
+  overflow: hidden;
+  transition: transform 120ms ease, filter 140ms ease, box-shadow 140ms ease;
+}
+
+.lf-btn-primary::after {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: -140%;
+  width: 36%;
+  transform: skewX(-18deg);
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.34), transparent);
+  transition: left 520ms ease;
+}
+
+.lf-btn-primary:hover::after {
+  left: 140%;
 }
 
 .lf-btn-primary:hover {
   filter: brightness(1.06);
+  transform: translateY(-1px);
+  box-shadow: 0 10px 24px color-mix(in srgb, var(--lf-accent) 38%, transparent);
 }
 
 .lf-btn-primary:active {
@@ -129,31 +189,33 @@ body {
 
 .lf-btn-ghost {
   border-radius: 11px;
-  border: 1px solid color-mix(in srgb, var(--lf-border) 88%, transparent);
-  background: color-mix(in srgb, var(--lf-surface) 78%, transparent);
+  border: 1px solid color-mix(in srgb, var(--lf-border) 84%, transparent);
+  background: color-mix(in srgb, var(--lf-surface) 74%, transparent);
   color: var(--lf-text);
   padding: 0.5rem 0.8rem;
   font-size: 0.77rem;
-  transition: background 130ms ease, border-color 130ms ease;
+  transition: background 130ms ease, border-color 130ms ease, transform 120ms ease;
 }
 
 .lf-btn-ghost:hover {
   border-color: color-mix(in srgb, var(--lf-border-soft) 88%, white 12%);
   background: color-mix(in srgb, var(--lf-surface-soft) 84%, transparent);
+  transform: translateY(-1px);
 }
 
 .lf-item {
   border-radius: 14px;
-  border: 1px solid color-mix(in srgb, var(--lf-border) 75%, transparent);
-  background: color-mix(in srgb, var(--lf-surface-soft) 82%, transparent);
+  border: 1px solid color-mix(in srgb, var(--lf-border) 80%, transparent);
+  background: color-mix(in srgb, var(--lf-surface-soft) 83%, transparent);
   padding: 0.72rem;
   transition: transform 150ms ease, border-color 150ms ease, background 150ms ease;
 }
 
 .lf-item:hover,
 .lf-card-soft:hover {
-  transform: translateY(-1px);
+  transform: translateY(-2px);
   border-color: color-mix(in srgb, var(--lf-border-soft) 85%, white 15%);
+  box-shadow: 0 12px 24px color-mix(in srgb, #020617 22%, transparent);
 }
 
 .lf-card-interactive:hover {
@@ -190,7 +252,184 @@ body {
 .lf-mobile-nav {
   border-color: color-mix(in srgb, var(--lf-border-soft) 84%, transparent);
   background: color-mix(in srgb, var(--lf-surface) 86%, transparent);
-  backdrop-filter: blur(14px);
+  backdrop-filter: blur(16px);
+}
+
+.lf-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  border-radius: 999px;
+  border: 1px solid color-mix(in srgb, var(--lf-border) 82%, transparent);
+  background: color-mix(in srgb, var(--lf-surface-soft) 72%, transparent);
+  padding: 0.34rem 0.7rem;
+  font-size: 0.66rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--lf-text-soft);
+}
+
+.lf-dot {
+  height: 0.4rem;
+  width: 0.4rem;
+  border-radius: 999px;
+  background: var(--lf-accent);
+  box-shadow: 0 0 0 6px color-mix(in srgb, var(--lf-accent) 24%, transparent);
+}
+
+.lf-gradient-title {
+  background: linear-gradient(
+    130deg,
+    color-mix(in srgb, white 92%, transparent) 0%,
+    color-mix(in srgb, var(--lf-accent-soft) 32%, white 68%) 52%,
+    color-mix(in srgb, white 95%, transparent) 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.lf-divider {
+  height: 1px;
+  width: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    color-mix(in srgb, var(--lf-border-soft) 78%, transparent) 48%,
+    transparent 100%
+  );
+}
+
+.lf-alert {
+  margin-bottom: 1rem;
+  border-radius: 14px;
+  border: 1px solid color-mix(in srgb, var(--lf-border) 76%, transparent);
+  background: color-mix(in srgb, var(--lf-surface-soft) 84%, transparent);
+  padding: 0.72rem 0.85rem;
+  font-size: 0.8rem;
+  line-height: 1.35;
+  color: var(--lf-text-soft);
+}
+
+.lf-alert.is-error {
+  border-color: color-mix(in srgb, #ef4444 48%, transparent);
+  background: color-mix(in srgb, #ef4444 12%, transparent);
+  color: #fecaca;
+}
+
+.lf-alert.is-success {
+  border-color: color-mix(in srgb, #22c55e 46%, transparent);
+  background: color-mix(in srgb, #22c55e 12%, transparent);
+  color: #bbf7d0;
+}
+
+.lf-kpi-grid {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.lf-hero-panel {
+  border: 1px solid color-mix(in srgb, var(--lf-border-soft) 82%, transparent);
+  background:
+    radial-gradient(120% 140% at 0% 0%, color-mix(in srgb, var(--lf-accent) 16%, transparent), transparent 55%),
+    color-mix(in srgb, var(--lf-surface-soft) 86%, transparent);
+  background-size: 130% 130%, auto;
+  animation: lfHeroShift 9s ease-in-out infinite alternate;
+}
+
+.lf-hero-panel::after {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(120deg, transparent 0%, color-mix(in srgb, white 7%, transparent) 45%, transparent 100%);
+  transform: translateX(-100%);
+  animation: lfSweep 4.8s ease-in-out infinite;
+}
+
+.lf-progress-track {
+  height: 0.44rem;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--lf-border) 70%, transparent);
+  overflow: hidden;
+}
+
+.lf-progress-fill {
+  height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--lf-accent-soft), var(--lf-accent));
+}
+
+.lf-status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  border-radius: 999px;
+  border: 1px solid color-mix(in srgb, var(--lf-border) 72%, transparent);
+  padding: 0.18rem 0.55rem;
+  font-size: 0.62rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.lf-status-pill.is-good {
+  border-color: color-mix(in srgb, #22c55e 50%, transparent);
+  background: color-mix(in srgb, #22c55e 14%, transparent);
+  color: #bbf7d0;
+}
+
+.lf-status-pill.is-warn {
+  border-color: color-mix(in srgb, #eab308 50%, transparent);
+  background: color-mix(in srgb, #eab308 14%, transparent);
+  color: #fef08a;
+}
+
+.lf-status-pill.is-bad {
+  border-color: color-mix(in srgb, #ef4444 50%, transparent);
+  background: color-mix(in srgb, #ef4444 14%, transparent);
+  color: #fecaca;
+}
+
+.lf-stagger > * {
+  opacity: 0;
+  transform: translateY(8px);
+  animation: lfStaggerIn 420ms cubic-bezier(0.19, 1, 0.22, 1) forwards;
+}
+
+.lf-stagger > *:nth-child(1) {
+  animation-delay: 40ms;
+}
+
+.lf-stagger > *:nth-child(2) {
+  animation-delay: 95ms;
+}
+
+.lf-stagger > *:nth-child(3) {
+  animation-delay: 150ms;
+}
+
+.lf-stagger > *:nth-child(4) {
+  animation-delay: 205ms;
+}
+
+.lf-stagger > *:nth-child(5) {
+  animation-delay: 260ms;
+}
+
+.lf-stagger > *:nth-child(6) {
+  animation-delay: 315ms;
+}
+
+.lf-float {
+  animation: lfFloat 6s ease-in-out infinite;
+}
+
+.lf-soft-glow {
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, var(--lf-border) 65%, transparent),
+    0 16px 40px color-mix(in srgb, #020617 40%, transparent),
+    0 0 0 12px color-mix(in srgb, var(--lf-accent) 8%, transparent);
 }
 
 .lf-fade-in {
@@ -221,6 +460,14 @@ body {
   animation: lfShimmer 1.4s ease-in-out infinite;
 }
 
+.text-gray-400 {
+  color: var(--lf-text-soft) !important;
+}
+
+.text-orange-300 {
+  color: var(--lf-accent-soft) !important;
+}
+
 @keyframes lfFadeIn {
   from {
     opacity: 0;
@@ -247,8 +494,57 @@ body {
   }
 }
 
+@keyframes lfFloat {
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+@keyframes lfStaggerIn {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes lfHeroShift {
+  0% {
+    background-position: 0% 0%, 0 0;
+  }
+  100% {
+    background-position: 100% 100%, 0 0;
+  }
+}
+
+@keyframes lfSweep {
+  0% {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  20% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(130%);
+    opacity: 0;
+  }
+}
 @media (max-width: 768px) {
   .lf-field {
     font-size: 16px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
   }
 }

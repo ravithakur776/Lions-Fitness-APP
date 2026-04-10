@@ -156,12 +156,29 @@ export default function AdminDashboardPage() {
       maxWidth="max-w-6xl"
     >
       {(error || status.message) && (
-        <div className="mb-4 rounded-xl border border-red-500/30 bg-red-500/10 p-3 text-sm text-red-200">
+        <div className={`lf-alert ${(error || status.type === 'error') ? 'is-error' : 'is-success'}`}>
           {error || status.message}
         </div>
       )}
 
-      <section className="mb-4 grid gap-3 md:grid-cols-4">
+      <section className="lf-card lf-hero-panel mb-4 p-4">
+        <div className="flex flex-wrap items-start justify-between gap-4">
+          <div>
+            <p className="text-xs uppercase tracking-[0.12em] text-[var(--lf-accent-soft)]">Operations Snapshot</p>
+            <h2 className="mt-1 text-xl font-semibold" style={{ fontFamily: 'var(--font-space-grotesk)' }}>
+              {stats.totalMembers} members • {formatCurrencyINR(stats.monthlyRevenue)} this month
+            </h2>
+            <p className="mt-1 text-sm text-[var(--lf-text-soft)]">
+              Monitor growth, control dues, and keep communication consistent.
+            </p>
+          </div>
+          <div className={`lf-status-pill ${stats.overdue > 0 ? 'is-warn' : 'is-good'}`}>
+            {stats.overdue > 0 ? `${stats.overdue} overdue` : 'all dues healthy'}
+          </div>
+        </div>
+      </section>
+
+      <section className="lf-kpi-grid mb-4 md:grid-cols-4">
         <StatCard label="Total Members" value={`${stats.totalMembers}`} />
         <StatCard label="Active Today" value={`${stats.activeToday}`} accent="text-green-300" />
         <StatCard label="Revenue (Month)" value={formatCurrencyINR(stats.monthlyRevenue)} accent="text-green-300" />
@@ -169,7 +186,7 @@ export default function AdminDashboardPage() {
       </section>
 
       <Card title="Management Areas">
-        <div className="space-y-2">
+        <div className="grid gap-2 md:grid-cols-2">
           <QuickLink href="/admin/members" label="Manage Members" desc="Add, edit, assign plans" tone="purple" />
           <QuickLink href="/admin/plans" label="Membership Plans" desc="Basic, Premium, Elite" tone="green" />
           <QuickLink href="/admin/payments" label="Payments" desc="Record dues and receipts" tone="yellow" badge={stats.overdue > 0 ? `${stats.overdue}` : undefined} />
