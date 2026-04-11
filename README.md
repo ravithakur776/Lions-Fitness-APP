@@ -1,4 +1,4 @@
-# Lions Fitness
+# Lions Fitness Gym App
 
 Lions Fitness is a complete role-based gym management app built with Next.js and Firebase.
 
