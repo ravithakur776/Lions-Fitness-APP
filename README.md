@@ -171,7 +171,7 @@ firebase deploy --only firestore:rules,firestore:indexes
 - `notifications/{notificationId}`
 - `announcements/{announcementId}`
 
-## Validation
+## *Validation*
 
 Current codebase validation:
 - `npm run lint` passes
