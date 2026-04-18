@@ -115,7 +115,7 @@ npm run vercel:login
 npm run deploy:vercel:prod
 ```
 
-## Firebase Setup (Rules + Indexes)
+## *Firebase Setup* (Rules + Indexes)
 
 This repo now includes:
 - `firestore.rules`
@@ -129,7 +129,7 @@ firebase use <your-project-id>
 firebase deploy --only firestore:rules,firestore:indexes
 ```
 
-## Routes
+## *Routes*
 
 - `/` Landing page
 - `/login` Login / Signup / Google / Forgot password
@@ -157,7 +157,7 @@ firebase deploy --only firestore:rules,firestore:indexes
 - `/admin/reports`
 - `/admin/announcements`
 
-## Firestore Data Shape (Used By App)
+## *Firestore Data Shape* (Used By App)
 
 - `users/{uid}`
   - role, displayName, email, trainerId, membershipStatus, membershipPlanName, fitnessGoal
