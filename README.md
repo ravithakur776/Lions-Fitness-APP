@@ -2,7 +2,7 @@
 
 Lions Fitness is a complete role-based gym management app built with Next.js and Firebase.
 
-## Included Modules
+## *Included Modules*
 
 1. Authentication
 - Email/password signup/login
@@ -35,7 +35,7 @@ Lions Fitness is a complete role-based gym management app built with Next.js and
 - Reports
 - Announcements
 
-## Tech Stack
+## *Tech Stack*
 
 - Next.js (App Router)
 - React
@@ -43,7 +43,7 @@ Lions Fitness is a complete role-based gym management app built with Next.js and
 - Cloud Firestore
 - Tailwind CSS
 
-## Quick Start
+## *Quick Start*
 
 1. Install dependencies
 ```bash
@@ -63,14 +63,14 @@ npm run dev
 ```
 Open [http://localhost:3000](http://localhost:3000).
 
-## Demo Mode (No Firebase Required)
+## *Demo Mode* (No Firebase Required)
 
 - Works out of the box with no keys
 - Sign up/login is fully functional
 - Role-based dashboards (Admin/Trainer/Member) work
 - Data persists in browser `localStorage`
 
-## Role Control (Important)
+## *Role Control* (Important)
 
 - Roles are assigned from `users/{uid}.role` (admin panel updates this).
 - You can force bootstrap roles by email via environment:
@@ -87,7 +87,7 @@ Open [http://localhost:3000](http://localhost:3000).
   - `NEXT_PUBLIC_OWNER_ONLY_MODE=true`
   - `NEXT_PUBLIC_OWNER_EMAIL=<your-email>`
 
-## Online Payments (Razorpay)
+## *Online Payments* (Razorpay)
 
 - Member due payments support UPI, card, net-banking, and wallet checkout.
 - Required environment variables:
@@ -100,7 +100,7 @@ Open [http://localhost:3000](http://localhost:3000).
   - `POST /api/payments/verify`
   - `POST /api/payments/webhook`
 
-## Production Deploy
+## *Production Deploy*
 
 Use the full guide in [`DEPLOYMENT.md`](./DEPLOYMENT.md).
 
