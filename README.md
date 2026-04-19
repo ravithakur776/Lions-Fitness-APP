@@ -1,16 +1,16 @@
-# Lions Fitness Gym App
+# *Lions Fitness Gym App*
 
 Lions Fitness is a complete role-based gym management app built with Next.js and Firebase.
 
 ## *Included Modules*
 
-1. Authentication
+1. **Authentication**
 - Email/password signup/login
 - Google login
 - Forgot password reset flow
 - Admin-controlled role routing (`admin`, `trainer`, `member`)
 
-2. Member App
+2. **Member App**
 - Dashboard
 - Attendance check-in/history
 - Progress tracker + log entries
@@ -18,7 +18,7 @@ Lions Fitness is a complete role-based gym management app built with Next.js and
 - Notifications
 - Profile settings
 
-3. Trainer App
+3. **Trainer App**
 - Dashboard
 - Assigned members view
 - Workout builder/assignment
@@ -26,7 +26,7 @@ Lions Fitness is a complete role-based gym management app built with Next.js and
 - Progress reporting
 - Notifications sender
 
-4. Admin App
+4. **Admin App**
 - Dashboard
 - Manage members
 - Manage trainers
