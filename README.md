@@ -115,7 +115,7 @@ npm run vercel:login
 npm run deploy:vercel:prod
 ```
 
-## *Firebase Setup* (Rules + Indexes)
+## *Firebase Setup* **(Rules + Indexes)**
 
 This repo now includes:
 - `firestore.rules`
