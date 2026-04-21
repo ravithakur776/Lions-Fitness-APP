@@ -70,7 +70,7 @@ Open [http://localhost:3000](http://localhost:3000).
 - Role-based dashboards (Admin/Trainer/Member) work
 - Data persists in browser `localStorage`
 
-## *Role Control* (Important)
+## *Role Control* **(Important)**
 
 - Roles are assigned from `users/{uid}.role` (admin panel updates this).
 - You can force bootstrap roles by email via environment:
