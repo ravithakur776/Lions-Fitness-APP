@@ -157,7 +157,7 @@ firebase deploy --only firestore:rules,firestore:indexes
 - `/admin/reports`
 - `/admin/announcements`
 
-## *Firestore Data Shape* (Used By App)
+## *Firestore Data Shape* **(Used By App)**
 
 - `users/{uid}`
   - role, displayName, email, trainerId, membershipStatus, membershipPlanName, fitnessGoal
