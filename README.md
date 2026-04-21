@@ -63,7 +63,7 @@ npm run dev
 ```
 Open [http://localhost:3000](http://localhost:3000).
 
-## *Demo Mode* (No Firebase Required)
+## *Demo Mode* **(No Firebase Required)**
 
 - Works out of the box with no keys
 - Sign up/login is fully functional
