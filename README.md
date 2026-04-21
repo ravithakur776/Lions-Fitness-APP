@@ -87,7 +87,7 @@ Open [http://localhost:3000](http://localhost:3000).
   - `NEXT_PUBLIC_OWNER_ONLY_MODE=true`
   - `NEXT_PUBLIC_OWNER_EMAIL=<your-email>`
 
-## *Online Payments* (Razorpay)
+## *Online Payments* **(Razorpay)**
 
 - Member due payments support UPI, card, net-banking, and wallet checkout.
 - Required environment variables:
