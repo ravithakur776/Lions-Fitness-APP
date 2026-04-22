@@ -176,3 +176,4 @@ firebase deploy --only firestore:rules,firestore:indexes
 Current codebase validation:
 - `npm run lint` passes
 - `npm run build` passes
+.
